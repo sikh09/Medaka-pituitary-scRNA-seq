@@ -10,14 +10,15 @@ The pituitary is a master endocrine gland in vertebrates, which controls a varie
 
 * CellRanger/STAR alignment (CR version 3.0.2, STAR 2.5.1b)
 * DropEst quantification (version 0.8.5)
-• Scone normalization
-• Seurat exploration
-• DoubletFinder doublet identification
-• VeloCyto trajectories
-• And maybe some more pseudotime analyses from dynverse
+* Scone normalization
+* Seurat exploration
+* DoubletFinder doublet identification
+* VeloCyto trajectories
+* And maybe some more pseudotime analyses from dynverse
 
 #### Data:
-sample 1 = females, sample 2 = males
+* sample 1 = females
+* sample 2 = males
 
 #### Genome:
 Oryzias_latipes.ASM223467v1.94.plusGFP_withchanges_13112018.gtf 
