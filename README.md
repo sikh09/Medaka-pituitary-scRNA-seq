@@ -32,4 +32,5 @@ Oryzias_latipes.ASM223467v1.Ensembl94_plusGFP.fasta
 /opt/cellranger-3.0.2/cellranger count --id sample1_11072019 --fastqs /media/sf_F_DRIVE/scmedaka/fastq-files/sample1/ --transcriptome medaka_cellranger --chemistry threeprime --expect-cells 2500 --indices=SI- GA-C7
 ```
 
-![average_plot_CTCF](https://github.com/Adnanhashim/LBR_LMNB1_hematopoietic-lineages/blob/master/Screenshot%202020-07-31%2011.58.32.png)
+![average_plot_CTCF](https://github.com/sikh09/Medaka-pituitary-scRNA-seq/blob/master/Cell_ranger_results.png)
+
