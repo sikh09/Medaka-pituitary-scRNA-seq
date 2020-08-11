@@ -26,7 +26,7 @@ Oryzias_latipes.ASM223467v1.Ensembl94_plusGFP.fasta
 
 #### Alignment:
 
-
+Sample 1
 ```
 /opt/cellranger-3.0.2/cellranger mkgtf genome13112018/Oryzias_latipes.ASM223467v1.94.plusGFP_withchanges_13112018 .gtf genome13112018/medaka_cellranger.gtf -- attribute=gene_biotype:protein_coding
 /opt/cellranger-3.0.2/cellranger mkref --genome medaka_cellranger --fasta /media/sf_F_DRIVE/scmedaka/genome13112018/Oryzias_latipes.ASM223467v1.Ense mbl94_plusGFP.fasta --genes /media/sf_F_DRIVE/scmedaka/genome13112018/medaka_cellranger.gtf --nthreads 6
@@ -34,4 +34,22 @@ Oryzias_latipes.ASM223467v1.Ensembl94_plusGFP.fasta
 ```
 
 ![average_plot_CTCF](https://github.com/sikh09/Medaka-pituitary-scRNA-seq/blob/master/Cell_ranger_results.png)
+
+#### Quantification
+```
+dropest -f -g ../../genome13112018/medaka_cellranger/genes/ medaka_genes_fix_25112019.gtf -c 10x.xml –M -V -L eEBA -o sample1_25112019 ../outs/possorted_genome_bam.bam
+```
+output
+
+* Unfiltered: 20419 genes, 74338 cells. Filtered: 18786 genes, 4945 cells.
+* Exons: 17284 genes, 4945 cells.
+* Introns: 15036 genes, 4945 cells.
+* Intron/exon spanning: 13766 genes, 4945 cells.
+
+#### Preliminary analysis in R:
+Preliminary_anlaysis.R is used for preliminary visulization and quality control of scRNA seq data
+
+#### Remove doublets:
+Remove_doublets.R is used to remove the duplets from scRNA seq data and updated quality control step.
+
 
