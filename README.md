@@ -8,8 +8,8 @@ The pituitary is a master endocrine gland in vertebrates, which controls a varie
 
 #### Intended pipeline:
 
-• CellRanger/STAR alignment (CR version 3.0.2, STAR 2.5.1b)
-• DropEst quantification (version 0.8.5)
+1. CellRanger/STAR alignment (CR version 3.0.2, STAR 2.5.1b)
+1. DropEst quantification (version 0.8.5)
 • Scone normalization
 • Seurat exploration
 • DoubletFinder doublet identification
