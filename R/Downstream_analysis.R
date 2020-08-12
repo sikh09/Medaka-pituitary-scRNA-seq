@@ -161,164 +161,24 @@ saveRDS(test, file = "finalS1.rds")
 
 ### Extracting UnNormalized counts for each cluster and prepare file for ballon/dot Plot##
 f1 <-read.table("Gene_list.txt", row.names = 1)
-cells.use <- WhichCells(object = test , ident = "0 0")
+j=1
+Ballon_data=list() #created empty list
+for(i in levels(test))
+{cells.use <- WhichCells(object = test , ident = i)
 expr <- GetAssayData(object = test, assay.type = "RNA", slot = "counts")[, cells.use]
 expr <- as(Class = 'matrix', object = expr)
-dim(expr)
-18377   668
+print(dim(expr))
 temp<- expr
-temp<-cbind(temp, Total = rowSums(temp))
-mer<- merge(f1,temp, by=0)
-Ballon_data<- mer[, c("Row.names","Total")]
-Ballon_data$Gonadotrope_Intermediate<-mer[, c("Row.names","Total")]
-Ballon_data$Row.names<-NULL
-Ballon_data$Total<-NULL
-
-
-cells.use <- WhichCells(object = test , ident = "0 1")
-expr <- GetAssayData(object = test, assay.type = "RNA", slot = "counts")[, cells.use]
-expr <- as(Class = 'matrix', object = expr)
-dim(expr)
-18377   416
-temp<- expr
-temp<-cbind(temp, Total = rowSums(temp))
-mer<- merge(f1,temp, by=0)
-Ballon_data$Gonadotrope_lhb<-mer[, c("Row.names","Total")]
-
-cells.use <- WhichCells(object = test , ident = "1")
-expr <- GetAssayData(object = test, assay.type = "RNA", slot = "counts")[, cells.use]
-expr <- as(Class = 'matrix', object = expr)
-dim(expr)
-18377   364
-temp<- expr
-temp<-cbind(temp, Total = rowSums(temp))
-mer<- merge(f1,temp, by=0)
-Ballon_data$Blood<-mer[, c("Row.names","Total")]
-
-
-cells.use <- WhichCells(object = test , ident = "2")
-expr <- GetAssayData(object = test, assay.type = "RNA", slot = "counts")[, cells.use]
-expr <- as(Class = 'matrix', object = expr)
-dim(expr)
-18377   299
-temp<- expr
-temp<-cbind(temp, Total = rowSums(temp))
-mer<- merge(f1,temp, by=0)
-Ballon_data$Stem_subcluster<-mer[, c("Row.names","Total")]
-
-
-
-cells.use <- WhichCells(object = test , ident = "3")
-expr <- GetAssayData(object = test, assay.type = "RNA", slot = "counts")[, cells.use]
-expr <- as(Class = 'matrix', object = expr)
-dim(expr)
-18377   197
-temp<- expr
-temp<-cbind(temp, Total = rowSums(temp))
-mer<- merge(f1,temp, by=0)
-Ballon_data$Stem<-mer[, c("Row.names","Total")]
-
-
-cells.use <- WhichCells(object = test , ident = "4 0")
-expr <- GetAssayData(object = test, assay.type = "RNA", slot = "counts")[, cells.use]
-expr <- as(Class = 'matrix', object = expr)
-dim(expr)
-18377    84
-temp<- expr
-temp<-cbind(temp, Total = rowSums(temp))
-mer<- merge(f1,temp, by=0)
-Ballon_data$TSHB<-mer[, c("Row.names","Total")]
-
-cells.use <- WhichCells(object = test , ident = "4 1")
-expr <- GetAssayData(object = test, assay.type = "RNA", slot = "counts")[, cells.use]
-expr <- as(Class = 'matrix', object = expr)
-dim(expr)
-18377    53
-temp<- expr
-temp<-cbind(temp, Total = rowSums(temp))
-mer<- merge(f1,temp, by=0)
-Ballon_data$GH<-mer[, c("Row.names","Total")]
-
-cells.use <- WhichCells(object = test , ident = "4 2")
-expr <- GetAssayData(object = test, assay.type = "RNA", slot = "counts")[, cells.use]
-expr <- as(Class = 'matrix', object = expr)
-dim(expr)
-18377    15
-temp<- expr
-temp<-cbind(temp, Total = rowSums(temp))
-mer<- merge(f1,temp, by=0)
-Ballon_data$SMTLA<-mer[, c("Row.names","Total")]
-
-cells.use <- WhichCells(object = test , ident = "5")
-expr <- GetAssayData(object = test, assay.type = "RNA", slot = "counts")[, cells.use]
-expr <- as(Class = 'matrix', object = expr)
-dim(expr)
-18377   136
-temp<- expr
-temp<-cbind(temp, Total = rowSums(temp))
-mer<- merge(f1,temp, by=0)
-Ballon_data$Fshb<-mer[, c("Row.names","Total")]
-
-cells.use <- WhichCells(object = test , ident = "6")
-expr <- GetAssayData(object = test, assay.type = "RNA", slot = "counts")[, cells.use]
-expr <- as(Class = 'matrix', object = expr)
-dim(expr)
-18377   123
-temp<- expr
-temp<-cbind(temp, Total = rowSums(temp))
-mer<- merge(f1,temp, by=0)
-Ballon_data$Lacto<-mer[, c("Row.names","Total")]
-
-cells.use <- WhichCells(object = test , ident = "7")
-expr <- GetAssayData(object = test, assay.type = "RNA", slot = "counts")[, cells.use]
-expr <- as(Class = 'matrix', object = expr)
-dim(expr)
-18377   115
-temp<- expr
-temp<-cbind(temp, Total = rowSums(temp))
-mer<- merge(f1,temp, by=0)
-Ballon_data$Non_endo<-mer[, c("Row.names","Total")]
-
-
-cells.use <- WhichCells(object = test , ident = "8 0")
-expr <- GetAssayData(object = test, assay.type = "RNA", slot = "counts")[, cells.use]
-expr <- as(Class = 'matrix', object = expr)
-dim(expr)
-18377   54
-temp<- expr
-temp<-cbind(temp, Total = rowSums(temp))
-mer<- merge(f1,temp, by=0)
-Ballon_data$Melano<-mer[, c("Row.names","Total")]
-
-cells.use <- WhichCells(object = test , ident = "8 1")
-expr <- GetAssayData(object = test, assay.type = "RNA", slot = "counts")[, cells.use]
-expr <- as(Class = 'matrix', object = expr)
-dim(expr)
-18377   24
-temp<- expr
-temp<-cbind(temp, Total = rowSums(temp))
-mer<- merge(f1,temp, by=0)
-Ballon_data$Cortoco<-mer[, c("Row.names","Total")]
-
-cells.use <- WhichCells(object = test , ident = "9")
-expr <- GetAssayData(object = test, assay.type = "RNA", slot = "counts")[, cells.use]
-expr <- as(Class = 'matrix', object = expr)
-dim(expr)
-18377   66
-temp<- expr
-temp<-cbind(temp, Total = rowSums(temp))
-mer<- merge(f1,temp, by=0)
-Ballon_data$Lactotrop_sub<-mer[, c("Row.names","Total")]
-
-cells.use <- WhichCells(object = test , ident = "10")
-expr <- GetAssayData(object = test, assay.type = "RNA", slot = "counts")[, cells.use]
-expr <- as(Class = 'matrix', object = expr)
-dim(expr)
-18377   15
-temp<- expr
-temp<-cbind(temp, Total = rowSums(temp))
-mer<- merge(f1,temp, by=0)
-Ballon_data$Novel<-mer[, c("Row.names","Total")]
+temp<-cbind(temp, Total = rowSums(temp)) #taking total expression in cells
+mer<- merge(f1,temp, by=0) #merg on bases of rownames and we have 8 cells
+nam=level_cluster.S1[j]
+print(nam)
+Ballon_data[[nam]]<- mer[, c("Row.names","Total")]
+nam=level_cluster[j]
+print(nam)
+j<<- j+1
+}
+Ballon_data_mer<- data.frame(Ballon_data)
 write.table(Ballon_data, "Female_Ballon_UnArranged_data3AUG.txt", sep = "\t", quote = F)
 
 head(Ballon_data)
