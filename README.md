@@ -52,7 +52,7 @@ Preliminary_anlaysis.R is used for preliminary visulization and quality control 
 #### Remove doublets:
 Remove_doublets.R is used to remove the duplets from scRNA seq data and updated quality control step.
 * I ended up with 2592 cells, 18377 genes in sample 1
-* I ended up with 3921 cells, XXXXXX genes in sample 2
+* I ended up with 3921 cells, 18660 genes in sample 2
 
 #### Downstream Analysis:
 
