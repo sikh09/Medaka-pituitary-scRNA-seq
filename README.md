@@ -46,14 +46,15 @@ output
 * Introns: 15036 genes, 4945 cells.
 * Intron/exon spanning: 13766 genes, 4945 cells.
 
-#### Preliminary analysis in R:
-Preliminary_anlaysis.R is used for preliminary visulization and quality control of scRNA seq data
+#### Initial analysis in R:
+Preliminary_anlaysis.R is used for preliminary visulization and quality control of scRNA seq data.
+* Used DropEst to find the accurate estimation of moleular counts per cell. 
 
-#### Remove doublets:
+#### Quality Control (QC):
 Remove_doublets.R is used to remove the duplets from scRNA seq data and updated quality control step.
 * I ended up with 2592 cells, 18377 genes in sample 1
-* I ended up with 3921 cells, 18660 genes in sample 2
+* I ended up with 3804 cells, 18660 genes in sample 2
 
 #### Downstream Analysis:
-
+xxxx.R is used for normalization, initial clustering and sub-clustering
 
