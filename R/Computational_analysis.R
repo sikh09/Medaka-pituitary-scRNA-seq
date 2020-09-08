@@ -60,3 +60,4 @@ plot(log10(qcdata$mito_fraction), log10(qcdata$req_umis_per_cb), pch = 20, col =
 points(log10(selected$mito_fraction), log10(selected$req_umis_per_cb), pch = 20, col = "#00ff0055")
 write.table(selected, file ="sample1_postqc_25112019.txt", na = "0", row.names = T, sep = "\t")
 
+
