@@ -46,8 +46,8 @@ output
 * Introns: 15036 genes, 4945 cells.
 * Intron/exon spanning: 13766 genes, 4945 cells.
 
-#### Initial analysis in R:
-Preliminary_anlaysis.R is used for preliminary visulization and quality control of scRNA seq data.
+#### computational analysis in R:
+computational_analysis.R is used for quantification and quality control (QC) of scRNA seq data.
 * Used DropEst to find the accurate estimation of moleular counts per cell. 
 
 #### Quality Control (QC):
