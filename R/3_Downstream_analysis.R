@@ -35,7 +35,7 @@ pdf("heatmap_female_pomc_TOP5.pdf", height = 10, width = 10)
 DoHeatmap(S1.Pomc, features = S1.top5$gene) + NoLegend()
 dev.off()
 
-S1.finalcm$sub_cluster <- as.character(Idents(S1.finalcm))
+S1.finalcm$sub_cluster <- as.character(Idents(S1.finalcm)) # Adding information
 S1.finalcm$sub_cluster[Cells(S1.Pomc)] <- paste("8",Idents(S1.Pomc))
 
 DimPlot(S1.finalcm, group.by = "sub_cluster", label = T)
@@ -70,18 +70,8 @@ S1.top10 <- S1.markers %>% group_by(cluster) %>% top_n(n = 10, wt = avg_logFC)
 pdf("heatmap_female_Gon.pdf", height = 10, width = 10)
 DoHeatmap(S1.Gon, features = S1.top10$gene) 
 dev.off()
-S1.top5 <- S1.markers %>% group_by(cluster) %>% top_n(n = 5, wt = avg_logFC)
 
-pdf("heatmap_female_GH_TOP5.pdf", height = 10, width = 10)
-DoHeatmap(S1.Gon, features = S1.top5$gene) + NoLegend()
-dev.off()
-
-pdf("Female_15clustering.pdf")
-test$sub_cluster[Cells(S1.Gon)] <- paste("0",Idents(S1.Gon))
-DimPlot(S1.finalcm, group.by = "sub_cluster", label = T) #15 clusters
-dev.off()
-
-#Adding to seurat object
+#Adding the sub-clusters into seurat object
 S1.finalcm$seurat_clusters<-S1.finalcm$sub_cluster
 pident=as.factor(S1.finalcm$seurat_clusters) #15 Levels: 0 0 0 1 1 10 2 3 4 0 4 1 4 2 5 6 7 8 0 8 1 9
 S1.finalcm@active.ident=pident #changed it with new 15 clusters
@@ -93,59 +83,13 @@ levels(test)
 #########################Manually changes cell identity### Manually change the cell identity because many cells should be in other cluster. In cluster thyrotropes "4 0"  many cells are part of somatolactin so I manually change the cells idenity
 Cells_smtla<- c("ACTTTCATCTGGAGCC","TGCGGGTAGATCCGAG","TGCGGGTAGATCCGAG","CATCAGACAATGGTCT","CAGCATACAATCTACG") # 5 cells are part of somatolactotropes
 SMTLA.old <- subset(S1.finalcm, idents = "4 2")
-dim(SMTLA.old)
 S1.finalcm <- SetIdent(object = S1.finalcm, cells = Cells_smtla, value = '4 2')
 SMTLA.new <- subset(S1.finalcm, idents = "4 2")
 dim(SMTLA.new)
-
-#There are few cells that are part of Thyrotropes## I changed it manually
-
-final.SMTLA.cells<-WhichCells(object = SMTLA.new, expression = ENSORLG00000013460 >= 4)
-final.Thyro.cells<-WhichCells(object = SMTLA.new, expression = ENSORLG00000013460 <= 3)
-test <- SetIdent(object = test, cells = final.SMTLA.cells, value = '4 2')
-test <- SetIdent(object = test, cells = final.Thyro.cells, value = '4 0')
-Final.SMTLA.Cluster <- subset(test, idents = "4 2")
-dim(Final.SMTLA.Cluster)
-18377    15
-Final.Thyro.Cluster <- subset(test, idents = "4 0")
-dim(Final.Thyro.Cluster)
-18377    88
-
-#Changes in somatotroph "4 1" cluster. There are few cells which are part of somatotrop but present in cluster "4 0" thyrotroph
-Somato_cluster95cells <- subset(test, idents = "4 1")
-dim(Somato_cluster95cells)
-18377    42
-Tshb_cluster95cells <- subset(test, idents = "4 0")
-final.Somato.cells<-WhichCells(object = Tshb_cluster95cells, expression = ENSORLG00000019556 > "50")
-test <- SetIdent(object = test, cells = final.Somato.cells, value = '4 1')
-Final.Somato.Cluster <- subset(test, idents = "4 1")
-dim(Final.Somato.Cluster)
-18377    53
-Final.Thyro.Cluster <- subset(test, idents = "4 0")
-dim(Final.Thyro.Cluster)
-18377    84
-
 
 pdf("Final_cluster15_noLabel.pdf", height = 10, width = 13)
 DimPlot(test, reduction = "umap", label = F, pt.size = 0.9)
 dev.off()
 
-pdf("Final_cluster15_Label.pdf", height = 10, width = 13)
-DimPlot(test, reduction = "umap", label = T, pt.size = 0.9)
-dev.off()
 
-#############################Heatmap###
 
-S1.markers <- FindAllMarkers(test, only.pos = TRUE, min.pct = 0.25, logfc.threshold = 0.25) #identified DE genes for 15 clusters
-S1.top10 <- S1.markers %>% group_by(cluster) %>% top_n(n = 10, wt = avg_logFC)
-pdf("heatmap_female_15clusters3AUG.pdf", height = 30, width = 30)
-DoHeatmap(test, features = S1.top10$gene) + NoLegend()
-dev.off()
-write.table(S1.top10, file="cluster15_Top10_marker_genes3AUG.txt", sep = "\t")
-S1.top5 <- S1.markers %>% group_by(cluster) %>% top_n(n = 5, wt = avg_logFC)
-
-pdf("heatmap_female_15clusters_top5J3AUG.pdf", height = 30, width = 30)
-DoHeatmap(test, features = S1.top5$gene) + NoLegend()
-dev.off()
-
-saveRDS(test, file = "finalS1.rds")
