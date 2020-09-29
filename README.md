@@ -13,8 +13,8 @@ The pituitary is a master endocrine gland in vertebrates, which controls a varie
 * Scone normalization
 * Seurat exploration
 * DoubletFinder doublet identification
-* VeloCyto trajectories
-* And maybe some more pseudotime analyses from dynverse
+* Final clustering
+
 
 #### Data:
 * sample 1 = females
