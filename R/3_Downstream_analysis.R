@@ -90,6 +90,75 @@ dim(SMTLA.new)
 pdf("Final_cluster15_noLabel.pdf", height = 10, width = 13)
 DimPlot(test, reduction = "umap", label = F, pt.size = 0.9)
 dev.off()
+S1.data<- S1.finalcm
+# Assign the names to cell clusters
+new.cluster.ids <- c("11. Red blood cells" ,  "9. Lhb gonadotropes" , "8. Fshb gonadotropes", "10. Gonadotropes"  ,    "7. Thyrotropes"  ,     "6. Somatotrope" ,
+                     "5. Somatolactotrope" , "1. Melanotrope"   ,    "2. Corticotrope"   ,   "12. Macrophages"    ,   "3. Lactotrope(a)"  ,  "4. Lactotrope(b)"   ,
+                     "13. Uncharacterized", "14. Uncharacterized","15. Uncharacterized")
+names(new.cluster.ids) <- levels(S1.data)
+S1.data <- RenameIdents(S1.data, new.cluster.ids)
+levels(S1.data)<- c("1. Melanotropes" ,"2. Corticotropes", "3. Lactotropes",  "4. Lactotropes", "5. Somatolactotropes" , "6. Somatotropes" , "7. Thyrotropes","8. Fshb gonadotropes", "9. Lhb gonadotropes" , "10. Gonadotropes"  , "11. Red blood cells" , "12. Macrophages","13. Uncharacterized", "14. Uncharacterized","15. Uncharacterized")
+color_S1 = c("#B983FF" ,  "orchid4", "lightcyan3" , "#FD61D1"  , "green2" ,"yellow","orange",  "#00BCD8", "peru",  "#F8766D"  ,  "firebrick3" , "rosybrown1", "#A3A500" ,"#6BB100", "blue")
+p2<- DimPlot(test, reduction = "umap", cols = color_S1,label = F, pt.size = 0.7)
+p2<- p2 + theme(legend.position="bottom",  panel.border = element_rect(colour = "black", fill=NA, size=1), plot.title = element_text(hjust = 0.5)) + labs(title = "Female Clustering")
+p2
+pdf("Final_female_clustering.pdf", height = 10, width = 12)
+p2
+dev.off()
+
+######### Heatmap ##########
+
+library(dplyr)
+cluster.markers <- FindAllMarkers(S1.data, min.pct = 0.25)
+S1.top5 <- cluster.markers %>% group_by(cluster) %>% top_n(n = 5, wt = avg_logFC)
+write.table(S1.top5, file="01_List_top5HeatmapGen.txt", sep = "\t")
+dim(S1.top5) # 75 5
 
 
+pdf("01_Female_heatmap.pdf", width = 6, height = 8)
+DoHeatmap(S1.data, features = S1.top5$gene, cells = WhichCells(S1.data, idents =  c("1. Melanotropes" ,"2. Corticotropes", "3. Lactotropes",  "4. Lactotropes", "5. Somatolactotropes" , "6. Somatotropes" , "7. Thyrotropes","8. Fshb gonadotropes", "9. Lhb gonadotropes" , "10. Gonadotropes"  ,"11. Red blood cells" , "12. Macrophages","13. Uncharacterized", "14. Uncharacterized","15. Uncharacterized")), group.colors= c("#B983FF"   ,   "orchid4"   ,   "lightcyan3"    , "#FD61D1"    , "green2"  ,"yellow","orange"   ,    "#00BCD8", "peru",  "#F8766D"  ,   "firebrick3" , "rosybrown1", "#A3A500" ,"#6BB100", "blue") , label = F) + NoLegend()
+dev.off()
 
+S2.cluster.markers <- FindAllMarkers(S2.data, min.pct = 0.25)
+S2.top5 <- S2.cluster.markers %>% group_by(cluster) %>% top_n(n = 5, wt = avg_logFC)
+write.table(S2.top5, file="02_List_Male_top5HeatmapGen.txt", sep = "\t")
+
+pdf("02_Male_heatmapt.pdf", width = 6, height = 8)
+DoHeatmap(S2.data, features = S2.top5$gene, cells = WhichCells(S2.data, idents =  c("1. Melanotropes" ,"2. Corticotropes", "3. Lactotropes",  "4. Lactotropes", "5. Somatolactotropes" , "6. Somatotropes" , "7. Thyrotropes","8. Fshb gonadotropes", "9. Lhb gonadotropes" , "10. Gonadotropes"  ,"11. Red blood cells" , "12. Macrophages","13. Uncharacterized", "14. Uncharacterized","15. Uncharacterized","16. Uncharacterized" )), group.colors= c("#B983FF"   ,   "orchid4"   ,   "lightcyan3"    , "#FD61D1"    , "green2"  ,"yellow","orange"   ,    "#00BCD8", "peru",  "#F8766D"  ,   "firebrick3" , "rosybrown1", "#A3A500" ,"#6BB100", "blue", "turquoise4") , label = F)+ NoLegend()
+dev.off()
+
+
+############ Ballon Plot ##########
+library(ggpubr)
+library(ggplot2)
+
+f1 <-read.table("Gene_list.txt", row.names = 1) #contained the list of hormone-producing gene marker 
+S1_Avg_Exp<- AverageExpression(S1.data) # taking the normalized avg expression of gene per cluster
+mer<- merge(S1_Avg_Exp$RNA, f1, by=0)
+write.table(mer, "Female_ballon_data.txt", sep = "\t") #arrabge it into 4 colums
+S1.ballon.data<- read.delim("Female_ballon_data.txt", sep = "\t")
+level_gene<-c( "cga","lhb", "fshb","tshb","gh1","smtla","prl", "pomc")
+col_val<- c("#B983FF"   ,   "#F8766D"  ,"blue",            "orchid4"   ,   "lightcyan3"    , "#FD61D1"    , "green2"  ,"yellow","orange"   ,    "#00BCD8", "peru")
+level_cluster_M= c("1. Melanotropes" ,"2. Corticotropes", "3. Lactotropes",  "4. Lactotropes", "5. Somatolactotropes" , "6. Somatotropes" , "7. Thyrotropes","8. Fshb gonadotropes", "9. Lhb gonadotropes" , "10. Gonadotropes"  , "11. Red blood cells" , "12. Macrophages","13. Uncharacterized", "14. Uncharacterized","15. Uncharacterized", "16. Uncharacterized")
+level_cluster_F= c("1. Melanotropes" ,"2. Corticotropes", "3. Lactotropes",  "4. Lactotropes", "5. Somatolactotropes" , "6. Somatotropes" , "7. Thyrotropes","8. Fshb gonadotropes", "9. Lhb gonadotropes" , "10. Gonadotropes"  , "11. Red blood cells" , "12. Macrophages","13. Uncharacterized", "14. Uncharacterized","15. Uncharacterized")
+S2.ballon.data<- read.delim("Final_male_ballon_data", sep = "\t")
+p3 <- ggplot(S1.ballon.data, aes(x = factor(Clusters,level = level_cluster_F), y = factor(Gene_names, level = level_gene))) + geom_point(data=S1.ballon.data[which(S1.ballon.data$counts <= 184),], aes(size=counts), fill='gray', color='gray', shape=21) + geom_point(data=S1.ballon.data[which(S1.ballon.data$counts > 185),],aes(fill=Clusters, size=counts), color = "white",shape=21)+ scale_fill_manual(values = col_val) + guides(fill=guide_legend(ncol=2)) + theme_bw() + theme() + scale_size_area(max_size=18) + labs(x = "Cell types", y = "Gene expression") + theme(axis.text.x = element_text(color = "black", size = 15, angle = 90, hjust=0.95,vjust=0.2, face = "plain"),axis.text.y = element_text(color = "black", size = 15, angle = 0, hjust = 1, vjust = 0, face = "italic"),axis.title.x = element_text(color = "black", size = 18, angle = 0, hjust = .5, vjust = 0, face = "bold"),axis.title.y = element_text(color = "black", size = 18, angle = 90, hjust = .5, vjust = .5, face = "bold"))+ theme(plot.title = element_text(color = "black", size = 20, hjust = .5,face = "bold"))
+p3= p3 + theme(legend.position = "none")+ labs(title = "Female") + theme(
+panel.grid.major.x = element_blank()
+) # to remove y axis grid
+pdf("Female_Ballon_plot.pdf", width = 12, height = 10)
+p3
+dev.off()
+p4 <- ggplot(S2.ballon.data, aes(x = factor(Clusters,level = level_cluster_M), y = factor(Gene_names, level = level_gene))) + geom_point(data=S2.ballon.data[which(S2.ballon.data$counts <= 184),], aes(size=counts), fill='gray', color='gray', shape=21) + geom_point(data=S2.ballon.data[which(S2.ballon.data$counts > 185),],aes(fill=Clusters, size=counts), color = "white", shape=21)+ scale_fill_manual(values = col_val) + guides(fill=guide_legend(ncol=2)) + theme_bw() + theme() + scale_size_area(max_size=18) + labs(x = "Cell types", y = "Gene expression") + theme(axis.text.x = element_text(color = "black", size = 15, angle = 90, hjust=0.95,vjust=0.2,  face = "plain"),axis.text.y = element_text(color = "black", size = 15, angle = 0, hjust = 1, vjust = 0, face = "italic"),axis.title.x = element_text(color = "black", size = 18, angle = 0, hjust = .5, vjust = 0, face = "bold"),axis.title.y = element_text(color = "black", size = 18, angle = 90, hjust = .5, vjust = .5, face = "bold"))+ theme(plot.title = element_text(color = "black", size = 20, hjust = .5,face = "bold"))
+p4=p4+ theme(legend.position = "none")+ labs(title = "Male") + theme(
+panel.grid.major.x = element_blank()
+)
+pdf("Male_Ballon_plot.pdf", width = 12, height = 10)
+p4
+dev.off()
+
+pdf("Final_ballon_plo.pdf", width = 17.5, height = 8)
+ggarrange(p3, p4,
+#labels = c("A", "B"),
+          ncol = 2, nrow = 1)
+dev.off()                   
