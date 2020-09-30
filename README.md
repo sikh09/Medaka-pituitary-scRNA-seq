@@ -14,6 +14,8 @@ The pituitary is a master endocrine gland in vertebrates, which controls a varie
 * Seurat exploration
 * DoubletFinder doublet identification
 * Final clustering
+* Differentially expressed (DE) genes
+* Ballon plot
 
 
 #### Data:
