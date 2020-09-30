@@ -56,5 +56,5 @@ Remove_doublets.R is used to remove the duplets from scRNA seq data and updated 
 * I ended up with 3804 cells, 18660 genes in sample 2
 
 #### Downstream Analysis:
-xxxx.R is used for normalization, initial clustering and sub-clustering
+3_Downstream_analysis.R is used for normalization, initial clustering and sub-clustering, final clustering,DE gene, heatmap and ballon plot
 
