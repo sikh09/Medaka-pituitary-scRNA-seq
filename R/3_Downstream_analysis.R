@@ -76,30 +76,16 @@ S1.finalcm$seurat_clusters<-S1.finalcm$sub_cluster
 pident=as.factor(S1.finalcm$seurat_clusters) #15 Levels: 0 0 0 1 1 10 2 3 4 0 4 1 4 2 5 6 7 8 0 8 1 9
 S1.finalcm@active.ident=pident #changed it with new 15 clusters
 S1.finalcm@active.ident  # Levels: 0 0 0 1 1 10 2 3 4 0 4 1 4 2 5 6 7 8 0 8 1 9
-levels(test) <- c("0 0","0 1","1","2","3","4 0","4 1","4 2","5","6","7","8 0","8 1","9","10") #make a order
-levels(test)
-
-
-#########################Manually changes cell identity### Manually change the cell identity because many cells should be in other cluster. In cluster thyrotropes "4 0"  many cells are part of somatolactin so I manually change the cells idenity
-Cells_smtla<- c("ACTTTCATCTGGAGCC","TGCGGGTAGATCCGAG","TGCGGGTAGATCCGAG","CATCAGACAATGGTCT","CAGCATACAATCTACG") # 5 cells are part of somatolactotropes
-SMTLA.old <- subset(S1.finalcm, idents = "4 2")
-S1.finalcm <- SetIdent(object = S1.finalcm, cells = Cells_smtla, value = '4 2')
-SMTLA.new <- subset(S1.finalcm, idents = "4 2")
-dim(SMTLA.new)
-
-pdf("Final_cluster15_noLabel.pdf", height = 10, width = 13)
-DimPlot(test, reduction = "umap", label = F, pt.size = 0.9)
-dev.off()
+levels(S1.finalcm) <- c("0 0","0 1","1","2","3","4 0","4 1","4 2","5","6","7","8 0","8 1","9","10") #make a order
 S1.data<- S1.finalcm
 # Assign the names to cell clusters
-new.cluster.ids <- c("11. Red blood cells" ,  "9. Lhb gonadotropes" , "8. Fshb gonadotropes", "10. Gonadotropes"  ,    "7. Thyrotropes"  ,     "6. Somatotrope" ,
-                     "5. Somatolactotrope" , "1. Melanotrope"   ,    "2. Corticotrope"   ,   "12. Macrophages"    ,   "3. Lactotrope(a)"  ,  "4. Lactotrope(b)"   ,
-                     "13. Uncharacterized", "14. Uncharacterized","15. Uncharacterized")
+new.cluster.ids <- c("11. Red blood cells" ,  "9. Lhb-gonadotropes" , "8. Fshb-gonadotropes", "10. Gonadotrope-like"  ,    "7. Thyrotropes"  ,     "6. Somatotrope" ,
+                     "5. Somatolactotrope" , "1. Melanotrope"   ,    "2. Corticotrope"   ,   "12. Macrophages"    ,   "3. Lactotrope"  ,  "4. Lactotrope"   ,
+                     "13. Uncharacterized", "14. Uncharacterized","15. cga-expressing cells")
 names(new.cluster.ids) <- levels(S1.data)
 S1.data <- RenameIdents(S1.data, new.cluster.ids)
-levels(S1.data)<- c("1. Melanotropes" ,"2. Corticotropes", "3. Lactotropes",  "4. Lactotropes", "5. Somatolactotropes" , "6. Somatotropes" , "7. Thyrotropes","8. Fshb gonadotropes", "9. Lhb gonadotropes" , "10. Gonadotropes"  , "11. Red blood cells" , "12. Macrophages","13. Uncharacterized", "14. Uncharacterized","15. Uncharacterized")
-color_S1 = c("#B983FF" ,  "orchid4", "lightcyan3" , "#FD61D1"  , "green2" ,"yellow","orange",  "#00BCD8", "peru",  "#F8766D"  ,  "firebrick3" , "rosybrown1", "#A3A500" ,"#6BB100", "blue")
-p2<- DimPlot(test, reduction = "umap", cols = color_S1,label = F, pt.size = 0.7)
+color_S1 = c("#B983FF" ,  "orchid4", "lightcyan3" , "#FD61D1"  , "green2" ,"yellow","orange",  "#00BCD8", "peru",  "#F8766D"  ,  "firebrick3" , "rosybrown1", "#A3A500" ,"#6BB100")
+p2<- DimPlot(S1.data, reduction = "umap", cols = color_S1,label = F, pt.size = 0.7)
 p2<- p2 + theme(legend.position="bottom",  panel.border = element_rect(colour = "black", fill=NA, size=1), plot.title = element_text(hjust = 0.5)) + labs(title = "Female Clustering")
 p2
 pdf("Final_female_clustering.pdf", height = 10, width = 12)
@@ -118,7 +104,7 @@ dim(S1.top5) # 75 5
 pdf("01_Female_heatmap.pdf", width = 6, height = 8)
 DoHeatmap(S1.data, features = S1.top5$gene, cells = WhichCells(S1.data, idents =  c("1. Melanotropes" ,"2. Corticotropes", "3. Lactotropes",  "4. Lactotropes", "5. Somatolactotropes" , "6. Somatotropes" , "7. Thyrotropes","8. Fshb gonadotropes", "9. Lhb gonadotropes" , "10. Gonadotropes"  ,"11. Red blood cells" , "12. Macrophages","13. Uncharacterized", "14. Uncharacterized","15. Uncharacterized")), group.colors= c("#B983FF"   ,   "orchid4"   ,   "lightcyan3"    , "#FD61D1"    , "green2"  ,"yellow","orange"   ,    "#00BCD8", "peru",  "#F8766D"  ,   "firebrick3" , "rosybrown1", "#A3A500" ,"#6BB100", "blue") , label = F) + NoLegend()
 dev.off()
-
+# for male data
 S2.cluster.markers <- FindAllMarkers(S2.data, min.pct = 0.25)
 S2.top5 <- S2.cluster.markers %>% group_by(cluster) %>% top_n(n = 5, wt = avg_logFC)
 write.table(S2.top5, file="02_List_Male_top5HeatmapGen.txt", sep = "\t")
@@ -139,8 +125,8 @@ write.table(mer, "Female_ballon_data.txt", sep = "\t") #arrabge it into 4 colums
 S1.ballon.data<- read.delim("Female_ballon_data.txt", sep = "\t")
 level_gene<-c( "cga","lhb", "fshb","tshb","gh1","smtla","prl", "pomc")
 col_val<- c("#B983FF"   ,   "#F8766D"  ,"blue",            "orchid4"   ,   "lightcyan3"    , "#FD61D1"    , "green2"  ,"yellow","orange"   ,    "#00BCD8", "peru")
-level_cluster_M= c("1. Melanotropes" ,"2. Corticotropes", "3. Lactotropes",  "4. Lactotropes", "5. Somatolactotropes" , "6. Somatotropes" , "7. Thyrotropes","8. Fshb gonadotropes", "9. Lhb gonadotropes" , "10. Gonadotropes"  , "11. Red blood cells" , "12. Macrophages","13. Uncharacterized", "14. Uncharacterized","15. Uncharacterized", "16. Uncharacterized")
-level_cluster_F= c("1. Melanotropes" ,"2. Corticotropes", "3. Lactotropes",  "4. Lactotropes", "5. Somatolactotropes" , "6. Somatotropes" , "7. Thyrotropes","8. Fshb gonadotropes", "9. Lhb gonadotropes" , "10. Gonadotropes"  , "11. Red blood cells" , "12. Macrophages","13. Uncharacterized", "14. Uncharacterized","15. Uncharacterized")
+level_cluster_M= c("1. Melanotropes" ,"2. Corticotropes", "3. Lactotropes",  "4. Lactotropes", "5. Somatolactotropes" , "6. Somatotropes" , "7. Thyrotropes","8. Fshb-gonadotropes", "9. Lhb-gonadotropes" , "10. Gonadotrope-like"  , "11. Red blood cells" , "12. Macrophages","13. Uncharacterized", "14. Uncharacterized","15. cga-expressing cells", "16. Uncharacterized")
+level_cluster_F= c("1. Melanotropes" ,"2. Corticotropes", "3. Lactotropes",  "4. Lactotropes", "5. Somatolactotropes" , "6. Somatotropes" , "7. Thyrotropes","8. Fshb-gonadotropes", "9. Lhb-gonadotropes" , "10. Gonadotrope-like"  , "11. Red blood cells" , "12. Macrophages","13. Uncharacterized", "14. Uncharacterized","15. cga-expressing cells")
 S2.ballon.data<- read.delim("Final_male_ballon_data", sep = "\t")
 p3 <- ggplot(S1.ballon.data, aes(x = factor(Clusters,level = level_cluster_F), y = factor(Gene_names, level = level_gene))) + geom_point(data=S1.ballon.data[which(S1.ballon.data$counts <= 184),], aes(size=counts), fill='gray', color='gray', shape=21) + geom_point(data=S1.ballon.data[which(S1.ballon.data$counts > 185),],aes(fill=Clusters, size=counts), color = "white",shape=21)+ scale_fill_manual(values = col_val) + guides(fill=guide_legend(ncol=2)) + theme_bw() + theme() + scale_size_area(max_size=18) + labs(x = "Cell types", y = "Gene expression") + theme(axis.text.x = element_text(color = "black", size = 15, angle = 90, hjust=0.95,vjust=0.2, face = "plain"),axis.text.y = element_text(color = "black", size = 15, angle = 0, hjust = 1, vjust = 0, face = "italic"),axis.title.x = element_text(color = "black", size = 18, angle = 0, hjust = .5, vjust = 0, face = "bold"),axis.title.y = element_text(color = "black", size = 18, angle = 90, hjust = .5, vjust = .5, face = "bold"))+ theme(plot.title = element_text(color = "black", size = 20, hjust = .5,face = "bold"))
 p3= p3 + theme(legend.position = "none")+ labs(title = "Female") + theme(
