@@ -49,11 +49,11 @@ output
 * Intron/exon spanning: 13766 genes, 4945 cells.
 
 #### computational analysis in R:
-computational_analysis.R is used for quantification and initial quality control (QC) of scRNA seq data.
+01_initial_analysis.R is used for initial quality control (QC) of scRNA seq data.
 * Used DropEst to find the accurate estimation of moleular counts per cell. 
 
 #### QC:
-Remove_doublets.R is used to remove the duplets from scRNA seq data and updated quality control step.
+02_Remove_doublets.R is used to remove the douplets from scRNA seq data and updated quality control step.
 * I ended up with 2592 cells, 18377 genes in sample 1
 * I ended up with 3804 cells, 18660 genes in sample 2
 
