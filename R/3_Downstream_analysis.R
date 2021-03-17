@@ -11,7 +11,8 @@ S1.finalcm <- NormalizeData(S1.finalcm, normalization.method = "LogNormalize", s
 S1.finalcm<- FindVariableFeatures(S1.finalcm, selection.method = "vst", nfeatures = 2000)
 LabelPoints(plot = VariableFeaturePlot(scm), points = head(VariableFeatures(S1.finalcm), 10), repel = T)
 S1.finalcm <- ScaleData(S1.finalcm, features = rownames(S1.finalcm))
-S1.finalcm <- RunPCA(S1.finalcm, features = VariableFeatures(object = finalcm)) ElbowPlot(finalcm)
+S1.finalcm <- RunPCA(S1.finalcm, features = VariableFeatures(object = S1.finalcm)) 
+ElbowPlot(S1.finalcm)
 S1.finalcm <- FindNeighbors(S1.finalcm, dims = 1:10)
 S1.finalcm <- RunUMAP(S1.finalcm, dims = 1:10)
 S1.finalcm <- FindClusters(S1.finalcm, resolution = 0.5) #11 clusters
